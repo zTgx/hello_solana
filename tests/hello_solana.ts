@@ -2,6 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { HelloSolana } from "../target/types/hello_solana";
 import { Keypair } from '@solana/web3.js';
+import { assert } from 'chai';
 
 describe("hello_solana", () => {
   const provider = anchor.AnchorProvider.env();
@@ -12,6 +13,9 @@ describe("hello_solana", () => {
   console.log("payer: ", payer.publicKey);
 
   const addressInfoAccount = new Keypair();
+
+  // Generate a new keypair for the counter account
+  const counterKeypair = new Keypair();
 
   it("Is initialized!", async () => {
     const tx = await program.methods.initialize().rpc();
@@ -65,9 +69,49 @@ describe("hello_solana", () => {
     console.log(`City     : ${addressInfo.city}`);
   });
 
+  it('Initialize Counter', async () => {
+    await program.methods
+      .initializeCounter(new anchor.BN(2))
+      .accounts({
+        counter: counterKeypair.publicKey,
+        payer: payer.publicKey,
+      })
+      .signers([counterKeypair])
+      .rpc();
 
+    const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
 
+    assert(currentCount.count.toNumber() === 0, 'Expected initialized count to be 0');
+    assert(currentCount.maxCount.toNumber() === 2, 'Expected initialized max_count to be 2');
+  });
 
+  it('Increment Counter', async () => {
+    await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
+
+    const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
+    console.log("current count: ", currentCount);
+
+    assert(currentCount.count.toNumber() === 1, 'Expected  count to be 1');
+  });
+
+  it('Increment Counter Again', async () => {
+    await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
+
+    const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
+
+    assert(currentCount.count.toNumber() === 2, 'Expected  count to be 2');
+  });
+
+  it("Should handle counter overflow", async () => {
+    // Attempt to increment the counter, expecting an overflow error
+    try {
+      await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
+      assert.fail("Expected an overflow error but did not receive one.");
+    } catch (error) {
+      console.log("error message: ", error.message);
+      assert.include(error.message, "Overflow", "Expected overflow error message");
+    }
+  });
 
 
 });

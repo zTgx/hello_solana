@@ -30,7 +30,13 @@ pub mod hello_solana {
         handle_create_address_info(ctx, name, house_number, street, city)
     }
 
+    pub fn initialize_counter(ctx: Context<InitializeCounter>, max: u64) -> Result<()> {
+        handle_initialize_counter(ctx, max)
+    }
 
+    pub fn increment(ctx: Context<Increment>) -> Result<()> {
+        handle_increment(ctx)
+    }
 
 
 

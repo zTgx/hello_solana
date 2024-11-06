@@ -7,6 +7,9 @@ pub use initialize::*;
 pub mod price_updater;
 pub use price_updater::*;
 
+pub mod counter;
+pub use counter::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {

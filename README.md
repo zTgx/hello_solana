@@ -1,13 +1,31 @@
-# Solana examples in one project
+# Comprehensive Solana Examples Repository
 
 This repository is a collection of Solana on-chain programs, primarily based on examples from [Solana's official documentation](https://solana.com/docs/programs/examples), as well as personal discoveries and techniques learned along the way.
 
 
 <details>
 
-[Hello World on Solana! A minimal program that logs a greeting.](./programs/hello_solana/src/instructions/initialized.rs)  
+### Useful docs during learning process
+
+[Program Examples](https://solana.com/docs/programs/examples)  
+[anchor lang docs.rs](https://docs.rs/anchor-lang/latest/anchor_lang/index.html)  
+[solana web3.js](https://solana.com/docs/clients/javascript)  
+[Initializing Accounts in Solana and Anchor - from rareskills](https://www.rareskills.io/post/solana-initialize-account)  
+[solana cook book](https://solanacookbook.com/)  
+
+
+
+
+</details>
+
+<details>
+
+### Solana Examples & Tricks
+[Hello World on Solana.](./programs/hello_solana/src/instructions/initialized.rs)  
 [Use real-time Pyth data in Solana.](./programs/hello_solana/src/instructions/price_updater.rs)  
-[Store and retrieve data using Solana accounts.](./programs/hello_solana/src/instructions/create.rs)
+[Store and retrieve data using Solana accounts.](./programs/hello_solana/src/instructions/create.rs)  
+[Storing global state - Counter.](./programs/hello_solana/src/instructions/counter.rs)  
+
 
 
 
