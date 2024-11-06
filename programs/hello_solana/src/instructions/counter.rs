@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use crate::{greetings, state::counter::Counter};
+use crate::{greetings, state::counter::Counter, HelloSolanaError};
 
 #[derive(Accounts)]
 pub struct InitializeCounter<'info> {
@@ -19,11 +19,6 @@ pub struct InitializeCounter<'info> {
 pub struct Increment<'info> {
     #[account(mut)]
     pub counter: Account<'info, Counter>,
-}
-
-#[error_code]
-pub enum HelloSolanaError {
-    Overflow,
 }
 
 pub fn handle_initialize_counter(ctx: Context<InitializeCounter>, max: u64) -> Result<()> {

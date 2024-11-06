@@ -38,6 +38,9 @@ pub mod hello_solana {
         handle_increment(ctx)
     }
 
+    pub fn error_example(ctx: Context<ErrorExample>) -> Result<()> {
+        handle_error_example(ctx)
+    }
 
 
 

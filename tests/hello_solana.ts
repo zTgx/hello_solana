@@ -89,7 +89,6 @@ describe("hello_solana", () => {
     await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
 
     const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
-    console.log("current count: ", currentCount);
 
     assert(currentCount.count.toNumber() === 1, 'Expected  count to be 1');
   });
@@ -108,10 +107,17 @@ describe("hello_solana", () => {
       await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
       assert.fail("Expected an overflow error but did not receive one.");
     } catch (error) {
-      console.log("error message: ", error.message);
       assert.include(error.message, "Overflow", "Expected overflow error message");
     }
   });
 
+  it('Should always throw an error', async () => {
+    try {
+      await program.methods.errorExample().rpc();
+      assert.fail("Expected an error but did not receive one.");
+    } catch (error) {
+      assert.include(error.message, "Always", "Expected 'Always' error message");
+    }
+  });
 
 });

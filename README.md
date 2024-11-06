@@ -25,6 +25,7 @@ This repository is a collection of Solana on-chain programs, primarily based on 
 [Use real-time Pyth data in Solana.](./programs/hello_solana/src/instructions/price_updater.rs)  
 [Store and retrieve data using Solana accounts.](./programs/hello_solana/src/instructions/create.rs)  
 [Storing global state - Counter.](./programs/hello_solana/src/instructions/counter.rs)  
+[Custom #[error_code]](./programs/hello_solana/src/instructions/error.rs)  
 
 
 
