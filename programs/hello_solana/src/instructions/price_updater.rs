@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use pyth_solana_receiver_sdk::price_update::get_feed_id_from_hex;
 use std::mem::size_of;
-use crate::state::Data;
+use crate::{greetings, state::Data};
 
 #[derive(Accounts)]
 pub struct PriceUpdater<'info> {
@@ -18,7 +18,9 @@ pub struct PriceUpdater<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn handler(ctx: Context<PriceUpdater>, feed_id: &str) -> Result<()> {
+pub fn handle_price_update(ctx: Context<PriceUpdater>, feed_id: &str) -> Result<()> {
+    greetings!(ctx.program_id);
+
     let price_updater = &mut ctx.accounts.price_updater;
     let max_age: u64 = 30;
     let feed_id: [u8; 32] = get_feed_id_from_hex(feed_id)?;

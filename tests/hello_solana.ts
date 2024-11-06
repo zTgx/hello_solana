@@ -12,7 +12,7 @@ describe("hello_solana", () => {
   console.log("payer: ", payer.publicKey);
 
   it("Is initialized!", async () => {
-    const tx = await program.methods.initialized().rpc();
+    const tx = await program.methods.initialize().rpc();
     console.log("Your transaction signature", tx);
   });
 
@@ -21,7 +21,7 @@ describe("hello_solana", () => {
     const priceUpdaterKeypair = new Keypair();
 
     const feedId = "0x097d687437374051c75160d648800f021086bc8edf469f11284491fda8192315";
-    const tx = await program.methods.updatePrice(feedId).accounts({
+    const tx = await program.methods.priceUpdate(feedId).accounts({
         payer: payer.publicKey,
         priceUpdater: priceUpdaterKeypair.publicKey,
     })
