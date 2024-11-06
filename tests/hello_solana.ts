@@ -1,7 +1,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { HelloSolana } from "../target/types/hello_solana";
-import { Keypair } from '@solana/web3.js';
+import { Keypair, Transaction } from '@solana/web3.js';
 import { assert } from 'chai';
 
 describe("hello_solana", () => {
@@ -10,12 +10,11 @@ describe("hello_solana", () => {
 
   const program = anchor.workspace.HelloSolana as Program<HelloSolana>;
   const payer = provider.wallet as anchor.Wallet;
-  console.log("payer: ", payer.publicKey);
+  console.log("payer: ", payer);
 
   const addressInfoAccount = new Keypair();
-
-  // Generate a new keypair for the counter account
   const counterKeypair = new Keypair();
+  const userBKeypair = new Keypair();
 
   it("Is initialized!", async () => {
     const tx = await program.methods.initialize().rpc();
@@ -119,5 +118,59 @@ describe("hello_solana", () => {
       assert.include(error.message, "Always", "Expected 'Always' error message");
     }
   });
+
+  it('Set and Get Favorites', async () => {
+    const number = 42;
+    const color = "Blue";
+    const hobbies = ["Reading", "Hiking", "Coding"];
+
+    const [favoritesKeypair, avoritesPdaAndBump] = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from('favorites'), payer.publicKey.toBuffer()], program.programId);
+
+    const tx = await program.methods
+      .setFavorites(new anchor.BN(number), color, hobbies)
+      .accounts({
+        favorites: favoritesKeypair,
+        payer: payer.publicKey,
+      })
+      .signers([payer.payer])
+      .rpc();
+
+    console.log("tx: ", tx);
+    const favoritesAccount = await program.account.favorites.fetch(favoritesKeypair);
+    console.log("favoritesAccount: ", favoritesAccount);
+
+    assert(favoritesAccount.number.toNumber() === number, `Expected number to be ${number}`);
+    assert(favoritesAccount.color === color, `Expected color to be ${color}`);
+    assert.deepEqual(favoritesAccount.hobbies, hobbies, `Expected hobbies to be ${hobbies}`);
+  });
+
+  it('Update Favorites', async () => {
+    const updatedNumber = 43;
+    const updatedColor = "Green";
+    const updatedHobbies = ["Reading", "Hiking", "Coding", "Photography"];
+
+    const [favoritesKeypair, avoritesPdaAndBump] = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from('favorites'), payer.publicKey.toBuffer()], program.programId);
+
+    const tx = await program.methods
+      .setFavorites(new anchor.BN(updatedNumber), updatedColor, updatedHobbies)
+      .accounts({
+        favorites: favoritesKeypair,
+        payer: payer.publicKey,
+      })
+      .signers([payer.payer])
+      .rpc();
+    console.log("tx: ", tx);
+
+    const updatedFavoritesAccount = await program.account.favorites.fetch(favoritesKeypair);
+
+    assert(updatedFavoritesAccount.number.toNumber() === updatedNumber, `Expected number to be ${updatedNumber}`);
+    assert(updatedFavoritesAccount.color === updatedColor, `Expected color to be ${updatedColor}`);
+    assert.deepEqual(updatedFavoritesAccount.hobbies, updatedHobbies, `Expected hobbies to be ${updatedHobbies}`);
+  });
+
+
+
+
+
 
 });

@@ -15,6 +15,9 @@ pub use counter::*;
 pub mod error;
 pub use error::*;
 
+pub mod favorites;
+pub use favorites::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {

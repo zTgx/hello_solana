@@ -42,8 +42,9 @@ pub mod hello_solana {
         handle_error_example(ctx)
     }
 
-
-
+    pub fn set_favorites(ctx: Context<SetFavorites>, number: u64, color: String, hobbies: Vec<String>) -> Result<()> {
+        handle_set_favorites(ctx, number, color, hobbies)
+    }
 
 
 

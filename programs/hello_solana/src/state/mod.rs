@@ -6,3 +6,6 @@ pub use address_info::*;
 
 pub mod counter;
 pub use counter::*;
+
+pub mod favorites;
+pub use favorites::*;

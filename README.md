@@ -26,7 +26,7 @@ This repository is a collection of Solana on-chain programs, primarily based on 
 [Store and retrieve data using Solana accounts.](./programs/hello_solana/src/instructions/create.rs)  
 [Storing global state - Counter.](./programs/hello_solana/src/instructions/counter.rs)  
 [Custom #[error_code]](./programs/hello_solana/src/instructions/error.rs)  
-
+[Saving per-user state - Favorites](./programs/hello_solana/src/instructions/favorites.rs)
 
 
 
