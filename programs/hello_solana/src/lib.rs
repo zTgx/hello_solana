@@ -19,7 +19,29 @@ pub mod hello_solana {
     pub fn price_update(ctx: Context<PriceUpdater>, feed_id: String) -> Result<()> {
         handle_price_update(ctx, &feed_id)
     }
-}
+
+    pub fn create_address_info(
+        ctx: Context<CreateAddressInfo>,
+        name: String,
+        house_number: u8,
+        street: String,
+        city: String,
+    ) -> Result<()> {
+        handle_create_address_info(ctx, name, house_number, street, city)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+} // End hello_solana
 
 
 
