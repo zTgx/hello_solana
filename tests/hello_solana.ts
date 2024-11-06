@@ -4,9 +4,6 @@ import { HelloSolana } from "../target/types/hello_solana";
 import { Keypair } from '@solana/web3.js';
 
 describe("hello_solana", () => {
-  // Configure the client to use the local cluster.
-  // anchor.setProvider(anchor.AnchorProvider.env());
-
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
@@ -15,16 +12,16 @@ describe("hello_solana", () => {
   console.log("payer: ", payer.publicKey);
 
   it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
+    const tx = await program.methods.initialized().rpc();
     console.log("Your transaction signature", tx);
   });
 
-  it("Is initialized!", async () => {
-    // Add your test here.
+  // This price feed update has a lower verification level than the one requested.
+  it("Fetch price from Pythe", async () => {
     const priceUpdaterKeypair = new Keypair();
 
-    const tx = await program.methods.ddd().accounts({
+    const feedId = "0x097d687437374051c75160d648800f021086bc8edf469f11284491fda8192315";
+    const tx = await program.methods.updatePrice(feedId).accounts({
         payer: payer.publicKey,
         priceUpdater: priceUpdaterKeypair.publicKey,
     })
@@ -32,27 +29,4 @@ describe("hello_solana", () => {
     .rpc();
     console.log("Your transaction signature", tx);
   });
-
-
-  // it('Say Sample!', async () => {
-  //   // Just run Anchor's IDL method to build a transaction!
-  //   const priceUpdaterKeypair = new Keypair();
-  //   console.log("priceUpdaterKeypair: ", priceUpdaterKeypair.publicKey);
-
-  //   // Check if the account already exists
-  //   const accountInfo = await provider.connection.getAccountInfo(priceUpdaterKeypair.publicKey);
-    
-  //   if (accountInfo === null) {
-  //     // Initialize the price_updater account
-  //     await program.methods.sample().accounts({
-  //       payer: payer.publicKey,
-  //       priceUpdater: priceUpdaterKeypair.publicKey,
-  //       systemProgram: anchor.web3.SystemProgram.programId, // Include the system program
-  //     })
-  //     .signers([priceUpdaterKeypair]) // Sign with both payer and priceUpdaterKeypair
-  //     .rpc();
-  //   } else {
-  //     console.log("Account already exists, skipping initialization.");
-  //   }
-  // });
 });
