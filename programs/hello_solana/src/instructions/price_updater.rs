@@ -1,7 +1,6 @@
 use anchor_lang::prelude::*;
-use pyth_solana_receiver_sdk::price_update::get_feed_id_from_hex;
 use std::mem::size_of;
-use crate::{greetings, state::Data};
+use crate::{greetings, state::PriceFeed, HelloSolanaError};
 
 #[derive(Accounts)]
 pub struct PriceUpdater<'info> {
@@ -11,22 +10,37 @@ pub struct PriceUpdater<'info> {
     #[account(
         init,
         payer = payer,
-        space=size_of::<Data>() + 8
+        space=size_of::<PriceFeed>() + 8
     )]
-    pub price_updater: Account<'info, Data>,
+    pub price_updater: Account<'info, PriceFeed>,
 
     pub system_program: Program<'info, System>,
+
+    pub clock: Sysvar<'info, Clock>,
 }
 
-pub fn handle_price_update(ctx: Context<PriceUpdater>, feed_id: &str) -> Result<()> {
+pub fn handle_read_price(ctx: Context<PriceUpdater>) -> Result<()> {
     greetings!(ctx.program_id);
 
-    let price_updater = &mut ctx.accounts.price_updater;
-    let max_age: u64 = 30;
-    let feed_id: [u8; 32] = get_feed_id_from_hex(feed_id)?;
-    let price = price_updater.price.get_price_no_older_than(&Clock::get()?, max_age, &feed_id)?;
+    let price_feed = &ctx.accounts.price_updater;
+    let clock = &ctx.accounts.clock;
+    // Get the current timestamp
+    let timestamp: i64 = clock.unix_timestamp;
+    // Load the price from the price feed. Here, the price can be no older than 500 seconds.
+    let price: pyth_sdk::Price = price_feed
+        .get_price_no_older_than(timestamp, 30)
+        .ok_or(HelloSolanaError::PythError)?;
 
-    msg!("The price is ({} / {}) * 10^{}", price.price, price.conf, price.exponent);
+    let confidence_interval: u64 = price.conf;
+
+    let asset_price_full: i64 = price.price;
+
+    let asset_exponent: i32 = price.expo;
+
+    let asset_price = asset_price_full as f64 * 10f64.powi(asset_exponent);
+
+    msg!("Price: {}", asset_price);
+    msg!("Confidence interval: {}", confidence_interval);
 
     Ok(())
 }

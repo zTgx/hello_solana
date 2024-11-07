@@ -2,6 +2,7 @@
 
 This repository is a collection of Solana on-chain programs, primarily based on examples from [Solana's official documentation](https://solana.com/docs/programs/examples), as well as personal discoveries and techniques learned along the way.
 
+It's like a Schweizer Messer!
 
 <details>
 
@@ -27,7 +28,7 @@ This repository is a collection of Solana on-chain programs, primarily based on 
 [Storing global state - Counter.](./programs/hello_solana/src/instructions/counter.rs)  
 [Custom #[error_code]](./programs/hello_solana/src/instructions/error.rs)  
 [Saving per-user state - Favorites](./programs/hello_solana/src/instructions/favorites.rs)
-
+[Check that the accounts provided in incoming instructions meet particular criteria.](./programs/hello_solana/src/instructions/check_account.rs)
 
 
 

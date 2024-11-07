@@ -16,9 +16,9 @@ pub mod hello_solana {
         handle_initialize(ctx)
     }
     
-    pub fn price_update(ctx: Context<PriceUpdater>, feed_id: String) -> Result<()> {
-        handle_price_update(ctx, &feed_id)
-    }
+    // pub fn price_update(ctx: Context<PriceUpdater>) -> Result<()> {
+    //     handle_read_price(ctx)
+    // }
 
     pub fn create_address_info(
         ctx: Context<CreateAddressInfo>,
@@ -46,7 +46,9 @@ pub mod hello_solana {
         handle_set_favorites(ctx, number, color, hobbies)
     }
 
-
+    pub fn check_accounts(ctx: Context<CheckingAccounts>) -> Result<()> {
+        handle_check_accounts(ctx)
+    }
 
 
 
