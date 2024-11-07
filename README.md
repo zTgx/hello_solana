@@ -28,8 +28,8 @@ It's like a Schweizer Messer!
 [Storing global state - Counter.](./programs/hello_solana/src/instructions/counter.rs)  
 [Custom #[error_code]](./programs/hello_solana/src/instructions/error.rs)  
 [Saving per-user state - Favorites](./programs/hello_solana/src/instructions/favorites.rs)
-[Check that the accounts provided in incoming instructions meet particular criteria.](./programs/hello_solana/src/instructions/check_account.rs)
-
+[Check that the accounts provided in incoming instructions meet particular criteria.](./programs/hello_solana/src/instructions/check_account.rs)  
+[Close an account and get the Lamports back.](./programs/hello_solana/src/instructions/create_or_close_user.rs)  
 
 
 </details>

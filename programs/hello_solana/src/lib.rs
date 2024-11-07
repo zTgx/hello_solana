@@ -50,7 +50,13 @@ pub mod hello_solana {
         handle_check_accounts(ctx)
     }
 
+    pub fn create_user(ctx: Context<CreateUserContext>, name: String) -> Result<()> {
+        handle_create_user(ctx, name)
+    }
 
+    pub fn close_user(ctx: Context<CloseUserContext>) -> Result<()> {
+        handle_close_user(ctx)
+    }
 
 
 } // End hello_solana

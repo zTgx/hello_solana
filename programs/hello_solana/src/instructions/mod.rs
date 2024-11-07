@@ -21,6 +21,9 @@ pub use favorites::*;
 pub mod check_account;
 pub use check_account::*;
 
+pub mod create_or_close_user;
+pub use create_or_close_user::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {

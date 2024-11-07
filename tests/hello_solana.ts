@@ -1,7 +1,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { HelloSolana } from "../target/types/hello_solana";
-import { Keypair, sendAndConfirmTransaction, SystemProgram, Transaction } from '@solana/web3.js';
+import { Keypair, PublicKey, sendAndConfirmTransaction, SystemProgram, Transaction } from '@solana/web3.js';
 import { assert } from 'chai';
 
 describe("hello_solana", () => {
@@ -10,163 +10,163 @@ describe("hello_solana", () => {
 
   const program = anchor.workspace.HelloSolana as Program<HelloSolana>;
   const payer = provider.wallet as anchor.Wallet;
-  console.log("payer: ", payer.publicKey);
-  console.log("program id: ", program.programId);
+  console.log("payer     : ", payer.publicKey.toString());
+  console.log("program id: ", program.programId.toString());
 
   const addressInfoAccount = new Keypair();
   const counterKeypair = new Keypair();
   const userBKeypair = new Keypair();
 
   it("Is initialized!", async () => {
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
+    await program.methods.initialize().rpc();
   });
 
-  // // TODO:
-  // // This price feed update has a lower verification level than the one requested.
-  // // it("Fetch price from Pythe", async () => {
-  // //   const priceUpdaterKeypair = new Keypair();
+  /*
+  // TODO:
+  // This price feed update has a lower verification level than the one requested.
+  // it("Fetch price from Pythe", async () => {
+  //   const priceUpdaterKeypair = new Keypair();
 
-  // //   const tx = await program.methods.priceUpdate().accounts({
-  // //       payer: payer.publicKey,
-  // //       priceUpdater: priceUpdaterKeypair.publicKey,
-  // //       clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-  // //   })
-  // //   .signers([priceUpdaterKeypair])
-  // //   .rpc();
-  // //   console.log("Your transaction signature", tx);
-  // // });
-
-  // it('Create the address info account', async () => {
-  //   console.log(`Payer Address      : ${payer.publicKey}`);
-  //   console.log(`Address Info Acct  : ${addressInfoAccount.publicKey}`);
-
-  //   // Instruction Ix data
-  //   const addressInfo = {
-  //     name: 'Joe C',
-  //     houseNumber: 136,
-  //     street: 'Mile High Dr.',
-  //     city: 'Solana Beach',
-  //   };
-
-  //   const tx = await program.methods
-  //     .createAddressInfo(addressInfo.name, addressInfo.houseNumber, addressInfo.street, addressInfo.city)
-  //     .accounts({
-  //       addressInfo: addressInfoAccount.publicKey,
+  //   const tx = await program.methods.priceUpdate().accounts({
   //       payer: payer.publicKey,
-  //     })
-  //     .signers([addressInfoAccount])
-  //     .rpc();
-
-  //     console.log("Your transaction signature", tx);
+  //       priceUpdater: priceUpdaterKeypair.publicKey,
+  //       clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
+  //   })
+  //   .signers([priceUpdaterKeypair])
+  //   .rpc();
+  //   console.log("Your transaction signature", tx);
   // });
 
-  // it("Read the new account's data", async () => {
-  //   const addressInfo = await program.account.addressInfo.fetch(addressInfoAccount.publicKey);
-  //   console.log(`Name     : ${addressInfo.name}`);
-  //   console.log(`House Num: ${addressInfo.houseNumber}`);
-  //   console.log(`Street   : ${addressInfo.street}`);
-  //   console.log(`City     : ${addressInfo.city}`);
-  // });
+  it('Create the address info account', async () => {
+    console.log(`Payer Address      : ${payer.publicKey}`);
+    console.log(`Address Info Acct  : ${addressInfoAccount.publicKey}`);
 
-  // it('Initialize Counter', async () => {
-  //   await program.methods
-  //     .initializeCounter(new anchor.BN(2))
-  //     .accounts({
-  //       counter: counterKeypair.publicKey,
-  //       payer: payer.publicKey,
-  //     })
-  //     .signers([counterKeypair])
-  //     .rpc();
+    // Instruction Ix data
+    const addressInfo = {
+      name: 'Joe C',
+      houseNumber: 136,
+      street: 'Mile High Dr.',
+      city: 'Solana Beach',
+    };
 
-  //   const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
+    const tx = await program.methods
+      .createAddressInfo(addressInfo.name, addressInfo.houseNumber, addressInfo.street, addressInfo.city)
+      .accounts({
+        addressInfo: addressInfoAccount.publicKey,
+        payer: payer.publicKey,
+      })
+      .signers([addressInfoAccount])
+      .rpc();
 
-  //   assert(currentCount.count.toNumber() === 0, 'Expected initialized count to be 0');
-  //   assert(currentCount.maxCount.toNumber() === 2, 'Expected initialized max_count to be 2');
-  // });
+      console.log("Your transaction signature", tx);
+  });
 
-  // it('Increment Counter', async () => {
-  //   await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
+  it("Read the new account's data", async () => {
+    const addressInfo = await program.account.addressInfo.fetch(addressInfoAccount.publicKey);
+    console.log(`Name     : ${addressInfo.name}`);
+    console.log(`House Num: ${addressInfo.houseNumber}`);
+    console.log(`Street   : ${addressInfo.street}`);
+    console.log(`City     : ${addressInfo.city}`);
+  });
 
-  //   const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
+  it('Initialize Counter', async () => {
+    await program.methods
+      .initializeCounter(new anchor.BN(2))
+      .accounts({
+        counter: counterKeypair.publicKey,
+        payer: payer.publicKey,
+      })
+      .signers([counterKeypair])
+      .rpc();
 
-  //   assert(currentCount.count.toNumber() === 1, 'Expected  count to be 1');
-  // });
+    const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
 
-  // it('Increment Counter Again', async () => {
-  //   await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
+    assert(currentCount.count.toNumber() === 0, 'Expected initialized count to be 0');
+    assert(currentCount.maxCount.toNumber() === 2, 'Expected initialized max_count to be 2');
+  });
 
-  //   const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
+  it('Increment Counter', async () => {
+    await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
 
-  //   assert(currentCount.count.toNumber() === 2, 'Expected  count to be 2');
-  // });
+    const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
 
-  // it("Should handle counter overflow", async () => {
-  //   // Attempt to increment the counter, expecting an overflow error
-  //   try {
-  //     await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
-  //     assert.fail("Expected an overflow error but did not receive one.");
-  //   } catch (error) {
-  //     assert.include(error.message, "Overflow", "Expected overflow error message");
-  //   }
-  // });
+    assert(currentCount.count.toNumber() === 1, 'Expected  count to be 1');
+  });
 
-  // it('Should always throw an error', async () => {
-  //   try {
-  //     await program.methods.errorExample().rpc();
-  //     assert.fail("Expected an error but did not receive one.");
-  //   } catch (error) {
-  //     assert.include(error.message, "Always", "Expected 'Always' error message");
-  //   }
-  // });
+  it('Increment Counter Again', async () => {
+    await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
 
-  // it('Set and Get Favorites', async () => {
-  //   const number = 42;
-  //   const color = "Blue";
-  //   const hobbies = ["Reading", "Hiking", "Coding"];
+    const currentCount = await program.account.counter.fetch(counterKeypair.publicKey);
 
-  //   const [favoritesKeypair, avoritesPdaAndBump] = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from('favorites'), payer.publicKey.toBuffer()], program.programId);
+    assert(currentCount.count.toNumber() === 2, 'Expected  count to be 2');
+  });
 
-  //   const tx = await program.methods
-  //     .setFavorites(new anchor.BN(number), color, hobbies)
-  //     .accounts({
-  //       favorites: favoritesKeypair,
-  //       payer: payer.publicKey,
-  //     })
-  //     .signers([payer.payer])
-  //     .rpc();
+  it("Should handle counter overflow", async () => {
+    // Attempt to increment the counter, expecting an overflow error
+    try {
+      await program.methods.increment().accounts({ counter: counterKeypair.publicKey }).rpc();
+      assert.fail("Expected an overflow error but did not receive one.");
+    } catch (error) {
+      assert.include(error.message, "Overflow", "Expected overflow error message");
+    }
+  });
 
-  //   console.log("tx: ", tx);
-  //   const favoritesAccount = await program.account.favorites.fetch(favoritesKeypair);
+  it('Should always throw an error', async () => {
+    try {
+      await program.methods.errorExample().rpc();
+      assert.fail("Expected an error but did not receive one.");
+    } catch (error) {
+      assert.include(error.message, "Always", "Expected 'Always' error message");
+    }
+  });
 
-  //   assert(favoritesAccount.number.toNumber() === number, `Expected number to be ${number}`);
-  //   assert(favoritesAccount.color === color, `Expected color to be ${color}`);
-  //   assert.deepEqual(favoritesAccount.hobbies, hobbies, `Expected hobbies to be ${hobbies}`);
-  // });
+  it('Set and Get Favorites', async () => {
+    const number = 42;
+    const color = "Blue";
+    const hobbies = ["Reading", "Hiking", "Coding"];
 
-  // it('Update Favorites', async () => {
-  //   const updatedNumber = 43;
-  //   const updatedColor = "Green";
-  //   const updatedHobbies = ["Reading", "Hiking", "Coding", "Photography"];
+    const [favoritesKeypair, avoritesPdaAndBump] = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from('favorites'), payer.publicKey.toBuffer()], program.programId);
 
-  //   const [favoritesKeypair, avoritesPdaAndBump] = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from('favorites'), payer.publicKey.toBuffer()], program.programId);
+    const tx = await program.methods
+      .setFavorites(new anchor.BN(number), color, hobbies)
+      .accounts({
+        favorites: favoritesKeypair,
+        payer: payer.publicKey,
+      })
+      .signers([payer.payer])
+      .rpc();
 
-  //   const tx = await program.methods
-  //     .setFavorites(new anchor.BN(updatedNumber), updatedColor, updatedHobbies)
-  //     .accounts({
-  //       favorites: favoritesKeypair,
-  //       payer: payer.publicKey,
-  //     })
-  //     .signers([payer.payer])
-  //     .rpc();
-  //   console.log("tx: ", tx);
+    console.log("tx: ", tx);
+    const favoritesAccount = await program.account.favorites.fetch(favoritesKeypair);
 
-  //   const updatedFavoritesAccount = await program.account.favorites.fetch(favoritesKeypair);
+    assert(favoritesAccount.number.toNumber() === number, `Expected number to be ${number}`);
+    assert(favoritesAccount.color === color, `Expected color to be ${color}`);
+    assert.deepEqual(favoritesAccount.hobbies, hobbies, `Expected hobbies to be ${hobbies}`);
+  });
 
-  //   assert(updatedFavoritesAccount.number.toNumber() === updatedNumber, `Expected number to be ${updatedNumber}`);
-  //   assert(updatedFavoritesAccount.color === updatedColor, `Expected color to be ${updatedColor}`);
-  //   assert.deepEqual(updatedFavoritesAccount.hobbies, updatedHobbies, `Expected hobbies to be ${updatedHobbies}`);
-  // });
+  it('Update Favorites', async () => {
+    const updatedNumber = 43;
+    const updatedColor = "Green";
+    const updatedHobbies = ["Reading", "Hiking", "Coding", "Photography"];
+
+    const [favoritesKeypair, avoritesPdaAndBump] = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from('favorites'), payer.publicKey.toBuffer()], program.programId);
+
+    const tx = await program.methods
+      .setFavorites(new anchor.BN(updatedNumber), updatedColor, updatedHobbies)
+      .accounts({
+        favorites: favoritesKeypair,
+        payer: payer.publicKey,
+      })
+      .signers([payer.payer])
+      .rpc();
+    console.log("tx: ", tx);
+
+    const updatedFavoritesAccount = await program.account.favorites.fetch(favoritesKeypair);
+
+    assert(updatedFavoritesAccount.number.toNumber() === updatedNumber, `Expected number to be ${updatedNumber}`);
+    assert(updatedFavoritesAccount.color === updatedColor, `Expected color to be ${updatedColor}`);
+    assert.deepEqual(updatedFavoritesAccount.hobbies, updatedHobbies, `Expected hobbies to be ${updatedHobbies}`);
+  });
 
   // We'll create this ahead of time.
   // Our program will try to modify it.
@@ -198,7 +198,39 @@ describe("hello_solana", () => {
       })
       .rpc();
   });
+  */
 
+  // Derive the PDA for the user's account.
+  const [userAccountAddress] = PublicKey.findProgramAddressSync([Buffer.from('USER'), payer.publicKey.toBuffer()], program.programId);
+
+  it('Create Account', async () => {
+    await program.methods
+      .createUser('John Doe')
+      .accounts({
+        user: payer.publicKey,
+        userAccount: userAccountAddress,
+      })
+      .rpc();
+
+    // Fetch the account data
+    const userAccount = await program.account.userState.fetch(userAccountAddress);
+    assert.equal(userAccount.name, 'John Doe');
+    assert.equal(userAccount.user.toBase58(), payer.publicKey.toBase58());
+  });
+
+  it('Close Account', async () => {
+    await program.methods
+      .closeUser()
+      .accounts({
+        user: payer.publicKey,
+        userAccount: userAccountAddress,
+      })
+      .rpc();
+
+    // The account should no longer exist, returning null.
+    const userAccount = await program.account.userState.fetchNullable(userAccountAddress);
+    assert.equal(userAccount, null);
+  });
 
 
 
