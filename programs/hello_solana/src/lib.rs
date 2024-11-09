@@ -58,6 +58,10 @@ pub mod hello_solana {
         handle_close_user(ctx)
     }
 
+    pub fn system_vars(ctx: Context<SystemVars>) -> Result<()> {
+        handle_system_vars(ctx)
+    }
+
 
 } // End hello_solana
 

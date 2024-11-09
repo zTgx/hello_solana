@@ -232,7 +232,16 @@ describe("hello_solana", () => {
     assert.equal(userAccount, null);
   });
 
+  it("System vars!", async () => {
+    const tx = await program.methods
+      .systemVars()
+      .accounts({
+        recentBlockhashes: anchor.web3.SYSVAR_RECENT_BLOCKHASHES_PUBKEY,
+      })
+      .rpc();
 
+    console.log("Transaction hash got:", tx);
+  });
 
 
 });
