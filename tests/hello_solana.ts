@@ -233,40 +233,40 @@ describe("hello_solana", () => {
   });
 
   it("System vars!", async () => {
-    const tx = await program.methods
+    const _tx = await program.methods
       .systemVars()
       .accounts({
         recentBlockhashes: anchor.web3.SYSVAR_RECENT_BLOCKHASHES_PUBKEY,
       })
       .rpc();
 
-    console.log("Transaction hash got:", tx);
+    // console.log("Transaction hash got:", tx);
   });
 
-  it("Emit evnets", async () => {
-    const listenerMyEvent = program.addEventListener('MyEvent', (event, slot) => {
-      console.log(`slot ${slot} event value ${event.value}`);
-    });
+  // it("Emit evnets", async () => {
+  //   const listenerMyEvent = program.addEventListener('MyEvent', (event, slot) => {
+  //     console.log(`slot ${slot} event value ${event.value}`);
+  //   });
 
-    await program.methods.emitEvents().rpc();
+  //   await program.methods.emitEvents().rpc();
 
-    // This line is only for test purposes to ensure the event
-    // listener has time to listen to event.
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+  //   // This line is only for test purposes to ensure the event
+  //   // listener has time to listen to event.
+  //   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    program.removeEventListener(listenerMyEvent);
-  });
+  //   program.removeEventListener(listenerMyEvent);
+  // });
 
   it("Is called by the owner", async () => {
     // Add your test here.
-    const tx = await program.methods
+    const _tx = await program.methods
       .onlyOwner()
       .accounts({
         signerAccount: payer.publicKey,
       })
       .rpc();
 
-    console.log("Only Owner transaction hash:", tx);
+    // console.log("Only Owner transaction hash:", tx);
   });
 
   let attackKeypair = anchor.web3.Keypair.generate();
@@ -287,5 +287,16 @@ describe("hello_solana", () => {
     }
   });
 
+  it("Initialize mapping storage", async () => {
+    const key = new anchor.BN(42);
+    const seeds = [key.toArrayLike(Buffer, "le", 8)];
+
+    let valueAccount = anchor.web3.PublicKey.findProgramAddressSync(
+      seeds,
+      program.programId
+    )[0];
+
+    await program.methods.mapping(key).accounts({val: valueAccount}).rpc();
+  });
 
 });

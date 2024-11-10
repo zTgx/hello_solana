@@ -13,6 +13,7 @@ pub struct CreateAddressInfo<'info> {
     )]
     address_info: Account<'info, AddressInfo>,
 
+    // The system program is a program built into the Solana runtime (a bit like an Ethereum precompile) that transfers SOL from one account to another. 
     system_program: Program<'info, System>,
 }
 

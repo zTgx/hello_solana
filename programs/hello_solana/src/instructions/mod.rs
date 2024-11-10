@@ -34,6 +34,9 @@ pub use events::*;
 pub mod only_owner;
 pub use only_owner::*;
 
+pub mod mappings;
+pub use mappings::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {

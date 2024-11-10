@@ -15,8 +15,20 @@ pub struct InitializeCounter<'info> {
     pub system_program: Program<'info, System>,
 }
 
+// Derive Macro: Accounts
+// A data structure of validated accounts that can be deserialized from the input to a Solana program.
 #[derive(Accounts)]
 pub struct Increment<'info> {
+    // Attribute Macro: #[account]
+    // An attribute for a data structure representing a Solana account.
+    // #[account] generates trait implementations for the following traits:
+    // AccountSerialize
+    // AccountDeserialize
+    // AnchorSerialize
+    // AnchorDeserialize
+    // Clone
+    // Discriminator
+    // Owner
     #[account(mut)]
     pub counter: Account<'info, Counter>,
 }

@@ -70,6 +70,9 @@ pub mod hello_solana {
         handle_only_owner(ctx)
     }
 
+    pub fn mapping(ctx: Context<Mappings>, key: u64) -> Result<()> {
+        handle_mapping(ctx, key)
+    }
 } // End hello_solana
 
 

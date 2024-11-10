@@ -33,6 +33,7 @@ It's like a Schweizer Messer!
 [Solana clock and other “block” variables.](./programs/hello_solana/src/instructions/sysvars.rs)  
 [Emit events on solana.](./programs/hello_solana/src/instructions/events.rs)  
 [Only owner on solana.](./programs/hello_solana/src/instructions/only_owner.rs)  
+[Mapping.](./programs/hello_solana/src/instructions/mappings.rs)  
 
 
 
