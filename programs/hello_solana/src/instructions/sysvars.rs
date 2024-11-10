@@ -1,3 +1,6 @@
+// TODO:
+// use of deprecated struct `anchor_lang::solana_program::sysvar::recent_blockhashes::RecentBlockhashes`: Please do not use, will no longer be available in the future
+
 use anchor_lang::{prelude::*, solana_program::sysvar::recent_blockhashes::RecentBlockhashes};
 use crate::{greetings, id};
 

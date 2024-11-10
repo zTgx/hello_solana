@@ -24,6 +24,7 @@ pub use check_account::*;
 pub mod create_or_close_user;
 pub use create_or_close_user::*;
 
+#[allow(deprecated)]
 pub mod sysvars;
 pub use sysvars::*;
 
