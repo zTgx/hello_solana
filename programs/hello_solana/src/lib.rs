@@ -62,6 +62,9 @@ pub mod hello_solana {
         handle_system_vars(ctx)
     }
 
+    pub fn emit_events(ctx: Context<Events>) -> Result<()> {
+        handle_emit_events(ctx)
+    }
 
 } // End hello_solana
 

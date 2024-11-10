@@ -27,6 +27,9 @@ pub use create_or_close_user::*;
 pub mod sysvars;
 pub use sysvars::*;
 
+pub mod events;
+pub use events::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {

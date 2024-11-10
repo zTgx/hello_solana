@@ -243,5 +243,22 @@ describe("hello_solana", () => {
     console.log("Transaction hash got:", tx);
   });
 
+  it("Emit evnets", async () => {
+    const listenerMyEvent = program.addEventListener('MyEvent', (event, slot) => {
+      console.log(`slot ${slot} event value ${event.value}`);
+    });
+
+    await program.methods.emitEvents().rpc();
+
+    // This line is only for test purposes to ensure the event
+    // listener has time to listen to event.
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    program.removeEventListener(listenerMyEvent);
+  });
+
+
+
+
 
 });

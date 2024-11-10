@@ -30,6 +30,13 @@ It's like a Schweizer Messer!
 [Saving per-user state - Favorites](./programs/hello_solana/src/instructions/favorites.rs)
 [Check that the accounts provided in incoming instructions meet particular criteria.](./programs/hello_solana/src/instructions/check_account.rs)  
 [Close an account and get the Lamports back.](./programs/hello_solana/src/instructions/create_or_close_user.rs)  
+[Solana clock and other “block” variables.](./programs/hello_solana/src/instructions/sysvars.rs)  
+[Emit events on solana.](./programs/hello_solana/src/instructions/events.rs)  
+
+
+
+
+
 
 
 </details>
