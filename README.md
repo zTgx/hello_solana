@@ -32,7 +32,7 @@ It's like a Schweizer Messer!
 [Close an account and get the Lamports back.](./programs/hello_solana/src/instructions/create_or_close_user.rs)  
 [Solana clock and other “block” variables.](./programs/hello_solana/src/instructions/sysvars.rs)  
 [Emit events on solana.](./programs/hello_solana/src/instructions/events.rs)  
-
+[Only owner on solana.](./programs/hello_solana/src/instructions/only_owner.rs)  
 
 
 

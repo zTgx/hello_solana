@@ -257,8 +257,35 @@ describe("hello_solana", () => {
     program.removeEventListener(listenerMyEvent);
   });
 
+  it("Is called by the owner", async () => {
+    // Add your test here.
+    const tx = await program.methods
+      .onlyOwner()
+      .accounts({
+        signerAccount: payer.publicKey,
+      })
+      .rpc();
 
+    console.log("Only Owner transaction hash:", tx);
+  });
 
+  let attackKeypair = anchor.web3.Keypair.generate();
+
+  it("Is NOT called by the owner", async () => {
+    try {
+      await program.methods
+      .initialize()
+      .accounts({
+        signerAccount: attackKeypair.publicKey,
+      })
+      .signers([attackKeypair])
+      .rpc();
+      
+      assert.fail("Expected an owner.");
+    } catch (error) {
+      assert.include(error.message, "unknown signer", "Not Owner");
+    }
+  });
 
 
 });

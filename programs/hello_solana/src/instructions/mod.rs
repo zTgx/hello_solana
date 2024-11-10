@@ -30,6 +30,9 @@ pub use sysvars::*;
 pub mod events;
 pub use events::*;
 
+pub mod only_owner;
+pub use only_owner::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {

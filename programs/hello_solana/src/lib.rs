@@ -66,6 +66,10 @@ pub mod hello_solana {
         handle_emit_events(ctx)
     }
 
+    pub fn only_owner(ctx: Context<OnlyOwner>) -> Result<()> {
+        handle_only_owner(ctx)
+    }
+
 } // End hello_solana
 
 
