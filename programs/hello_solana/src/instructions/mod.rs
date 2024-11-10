@@ -42,9 +42,11 @@ macro_rules! greetings {
 
 #[error_code]
 pub enum HelloSolanaError {
+
     Overflow,
     PythError,
     TryToSerializePriceAccount,
 
+    #[msg("Always errors")]
     Always,
 }
