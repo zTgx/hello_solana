@@ -33,4 +33,18 @@ Nowadays, all accounts are required to be rent-exempt; you cannot pay less than 
 Although rent is computed on a “per byte” basis, accounts with zero data are not free; Solana still has to index them and store metadata about them.
 
 When accounts are initialized, the amount of rent needed is computed in the background; you don’t need to calculate the rent explicitly.
+```
+
+```
+An owner of an account is a program. An authority is a wallet. 
+All accounts in Solana have the following fields, which are mostly self-explanatory:
+
+Public Key
+lamport balance
+owner
+executable (a boolean flag)
+rent_epoch (can be ignored for rent-exempt accounts)
+data
+```
+
 

@@ -128,6 +128,13 @@ pub mod hello_solana {
         handle_batch_set(ctx, new_val)
     }
 
+    pub fn initialize_close(ctx: Context<InitializeClose>) -> Result<()> {
+        handle_initialize_close(ctx)
+    }
+    
+    pub fn delete(ctx: Context<Delete>) -> Result<()> {
+        handle_delete(ctx)
+    }
 
 
 } // End hello_solana

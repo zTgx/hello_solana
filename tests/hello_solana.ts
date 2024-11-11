@@ -436,4 +436,15 @@ describe("hello_solana", () => {
     const pdaAcc = await program.account.batchData.fetch(pda);
     assert(pdaAcc.value === 5, 'Expected pda count to be 5');
   });
+
+  it("Is Close!", async () => {
+    let seeds = [Buffer.from("close")];
+    let [thePda, _bump] = anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
+    await program.methods.initializeClose().accounts({thePda: thePda}).rpc();
+    await program.methods.delete().accounts({thePda: thePda}).rpc();
+
+    let account = await program.account.thePda.fetchNullable(thePda);
+    console.log(account)
+    assert(account === null, 'Expected account to be null');
+  });
 });
