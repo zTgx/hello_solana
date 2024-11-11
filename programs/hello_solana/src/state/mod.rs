@@ -15,3 +15,6 @@ pub use user_state::*;
 
 pub mod mapping;
 pub use mapping::*;
+
+pub mod my_storage;
+pub use my_storage::*;

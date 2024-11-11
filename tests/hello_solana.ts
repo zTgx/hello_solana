@@ -299,4 +299,95 @@ describe("hello_solana", () => {
     await program.methods.mapping(key).accounts({val: valueAccount}).rpc();
   });
 
+  async function printAccountBalance(account) {
+    const balance = await anchor.getProvider().connection.getBalance(account);
+    console.log(`${account} has ${balance / anchor.web3.LAMPORTS_PER_SOL} SOL`);
+  }
+
+  it("Transmit SOL", async () => {
+    // generate a new wallet
+    const recipient = anchor.web3.Keypair.generate();
+
+    await printAccountBalance(recipient.publicKey);
+
+    // send the account 1 SOL via the program
+    let amount = new anchor.BN(1 * anchor.web3.LAMPORTS_PER_SOL);
+    await program.methods.sendSol(amount)
+      .accounts({recipient: recipient.publicKey})
+      .rpc();
+
+    await printAccountBalance(recipient.publicKey);
+  });
+
+  it("Split SOL", async () => {
+    const recipient1 = anchor.web3.Keypair.generate();
+    const recipient2 = anchor.web3.Keypair.generate();
+    const recipient3 = anchor.web3.Keypair.generate();
+
+    await printAccountBalance(recipient1.publicKey);
+    await printAccountBalance(recipient2.publicKey);
+    await printAccountBalance(recipient3.publicKey);
+
+    const accountMeta1 = {pubkey: recipient1.publicKey, isWritable: true, isSigner: false};
+    const accountMeta2 = {pubkey: recipient2.publicKey, isWritable: true, isSigner: false};
+    const accountMeta3 = {pubkey: recipient3.publicKey, isWritable: true, isSigner: false};
+
+    let amount = new anchor.BN(1 * anchor.web3.LAMPORTS_PER_SOL);
+    await program.methods.splitSol(amount)
+      .remainingAccounts([accountMeta1, accountMeta2, accountMeta3])
+      .rpc();
+
+    await printAccountBalance(recipient1.publicKey);
+    await printAccountBalance(recipient2.publicKey);
+    await printAccountBalance(recipient3.publicKey);
+  });
+
+  async function airdropSol(publicKey, amount) {
+    let airdropTx = await anchor.getProvider().connection.requestAirdrop(publicKey, amount * anchor.web3.LAMPORTS_PER_SOL);
+
+    await confirmTransaction(airdropTx);
+  }
+
+  async function confirmTransaction(tx) {
+    const latestBlockHash = await anchor.getProvider().connection.getLatestBlockhash();
+    await anchor.getProvider().connection.confirmTransaction({
+      blockhash: latestBlockHash.blockhash,
+      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+      signature: tx,
+    });
+  }
+
+  it("Ownership", async () => {
+    console.log("program address", program.programId.toBase58());    
+
+    const seeds = []
+    const [pda, bump_] = anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
+
+    console.log("owner of pda before initialize:",
+      await anchor.getProvider().connection.getAccountInfo(pda));
+  
+      await program.methods.initializePda().accounts({pda: pda}).rpc();
+  
+      console.log("owner of pda after initialize:",
+      (await anchor.getProvider().connection.getAccountInfo(pda)).owner.toBase58());
+  
+      let keypair = anchor.web3.Keypair.generate();
+  
+      console.log("owner of keypair before airdrop:",
+      await anchor.getProvider().connection.getAccountInfo(keypair.publicKey));
+  
+      await airdropSol(keypair.publicKey, 1); // 1 SOL
+     
+      console.log("owner of keypair after airdrop:",
+      (await anchor.getProvider().connection.getAccountInfo(keypair.publicKey)).owner.toBase58());
+      
+      await program.methods.initializeKeypair()
+        .accounts({keypair: keypair.publicKey})
+        .signers([keypair]) // the signer must be the keypair
+        .rpc();
+  
+      console.log("owner of keypair after initialize:",
+      (await anchor.getProvider().connection.getAccountInfo(keypair.publicKey)).owner.toBase58());  
+  });
+
 });

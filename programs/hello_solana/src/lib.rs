@@ -73,6 +73,46 @@ pub mod hello_solana {
     pub fn mapping(ctx: Context<Mappings>, key: u64) -> Result<()> {
         handle_mapping(ctx, key)
     }
+
+    pub fn empty_rent(ctx: Context<EmptyRent>) -> Result<()> {
+        handle_empty_rent(ctx)
+    }
+
+    pub fn init_account(ctx: Context<InitializeAccount>) -> Result<()> {
+        handle_init_account(ctx)    
+    }
+    
+    pub fn increase_account_size(ctx: Context<IncreaseAccountSize>) -> Result<()> {
+        handle_increase_account_size(ctx)
+    }
+
+    pub fn read_balance(ctx: Context<ReadBalance>) -> Result<()> {
+        handle_read_balance(ctx)
+    }
+
+    pub fn send_sol(ctx: Context<SendSol>, amount: u64) -> Result<()> {
+        handle_send_sol(ctx, amount)
+    }
+
+    pub fn split_sol<'a, 'b, 'c, 'info>(
+        ctx: Context<'a, 'b, 'c, 'info, SplitSol<'info>>,
+        amount: u64,
+    ) -> Result<()> {
+        handle_split_sol(ctx, amount)
+    }
+
+    pub fn initialize_keypair(ctx: Context<InitializeKeypair>) -> Result<()> {
+        handle_initialize_keypair(ctx)
+    }
+
+    pub fn initialize_pda(ctx: Context<InitializePda>) -> Result<()> {
+        handle_initialize_pda(ctx)
+    }
+
+
+
+
+
 } // End hello_solana
 
 

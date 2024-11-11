@@ -37,6 +37,21 @@ pub use only_owner::*;
 pub mod mappings;
 pub use mappings::*;
 
+pub mod rent;
+pub use rent::*;
+
+pub mod realloc;
+pub use realloc::*;
+
+pub mod uncheck;
+pub use uncheck::*;
+
+pub mod send_sol;
+pub use send_sol::*;
+
+pub mod ownership;
+pub use ownership::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {
@@ -50,6 +65,9 @@ pub enum HelloSolanaError {
     Overflow,
     PythError,
     TryToSerializePriceAccount,
+
+    #[msg("transfer failed")]
+    TransferFailed,
 
     #[msg("Always errors")]
     Always,
