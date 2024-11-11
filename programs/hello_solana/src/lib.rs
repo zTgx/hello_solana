@@ -108,8 +108,19 @@ pub mod hello_solana {
     pub fn initialize_pda(ctx: Context<InitializePda>) -> Result<()> {
         handle_initialize_pda(ctx)
     }
-
-
+    pub fn initialize_cd_pda(ctx: Context<InitializeCdPda>) -> Result<()> {
+        handle_initialize_cd_pda(ctx)
+    }
+    
+    pub fn donate(ctx: Context<Donate>, amount: u64) -> Result<()> {
+        handle_donate(ctx, amount)
+    }
+    
+    pub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> Result<()> {
+        handle_withdraw(ctx, amount)
+    }
+    
+    
 
 
 

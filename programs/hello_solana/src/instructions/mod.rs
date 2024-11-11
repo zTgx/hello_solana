@@ -52,6 +52,9 @@ pub use send_sol::*;
 pub mod ownership;
 pub use ownership::*;
 
+pub mod crowd_fund;
+pub use crowd_fund::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {
