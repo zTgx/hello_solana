@@ -5,6 +5,7 @@ pub const ANCHOR_DISCRIMINATOR_SIZE: usize = 8;
 
 #[derive(Accounts)]
 pub struct SetFavorites<'info> {
+    // init_if_needed which, as the name suggests, will initialize the account if it does not exist.
     #[account(
         init_if_needed, 
         payer = payer, 

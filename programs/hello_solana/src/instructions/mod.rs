@@ -55,6 +55,9 @@ pub use ownership::*;
 pub mod crowd_fund;
 pub use crowd_fund::*;
 
+pub mod batch_tx;
+pub use batch_tx::*;
+
 #[macro_export]
 macro_rules! greetings {
     ($program_id:expr) => {

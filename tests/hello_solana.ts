@@ -416,7 +416,24 @@ describe("hello_solana", () => {
 
     console.log("lamport balance of pdaAccount",
     await anchor.getProvider().connection.getBalance(pdaAccount));
-
   });
 
+  it("Is Batch Tx!", async () => {
+    let seeds = [Buffer.from("batchtx")];
+    const [pda, _bump] = anchor.web3.PublicKey.findProgramAddressSync(seeds, program.programId);
+
+    const initTx = await program.methods.initializeBatch().accounts({pda: pda}).transaction();
+
+    // for u32, we don't need to use big numbers
+    const setTx = await program.methods.batchSet(5).accounts({pda: pda}).transaction();
+
+    let transaction = new anchor.web3.Transaction();
+    transaction.add(initTx);
+    transaction.add(setTx);
+
+    await anchor.web3.sendAndConfirmTransaction(anchor.getProvider().connection, transaction, [payer.payer]);
+
+    const pdaAcc = await program.account.batchData.fetch(pda);
+    assert(pdaAcc.value === 5, 'Expected pda count to be 5');
+  });
 });

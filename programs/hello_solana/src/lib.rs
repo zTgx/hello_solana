@@ -120,7 +120,13 @@ pub mod hello_solana {
         handle_withdraw(ctx, amount)
     }
     
+    pub fn initialize_batch(ctx: Context<InitializeBatchTx>) -> Result<()> {
+        handle_initialize_batch(ctx)
+    }
     
+    pub fn batch_set(ctx: Context<Set>, new_val: u32) -> Result<()> {
+        handle_batch_set(ctx, new_val)
+    }
 
 
 
