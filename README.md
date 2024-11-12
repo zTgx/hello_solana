@@ -1,6 +1,4 @@
-# Comprehensive Solana Examples Repository
-
-This repository is a collection of Solana on-chain programs, primarily based on examples from [Solana's official documentation](https://solana.com/docs/programs/examples), as well as personal discoveries and techniques learned along the way.
+# Comprehensive Solana Mono Repository
 
 It's like a Schweizer Messer!
 

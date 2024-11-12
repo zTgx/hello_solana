@@ -6,6 +6,7 @@ skip-lint = false
 
 [programs.localnet]
 hello_solana = "6aSQULbw3cswNouuCCVFD2M9ZbeZmXoUkjNqVceGofRS"
+rpg = "H5sX5Qm9UcrHXo3MS6HWUcQ8GnuUi8X5HyHDce3EKMBb"
 
 [registry]
 url = "https://api.apr.dev"
