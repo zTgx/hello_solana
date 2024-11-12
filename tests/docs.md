@@ -47,4 +47,20 @@ rent_epoch (can be ignored for rent-exempt accounts)
 data
 ```
 
+```
+The Account type will check that the owner of the account being loaded is actually owned by the program. 
+
+UncheckedAccount is an alias for AccountInfo. This does not check for ownership, so care must be taken as it will accept arbitrary accounts.
+
+This type will check that the Signer account signed the transaction; it checks that the signature matches the public key of the account.
+
+Because a signer is also an account, you can read the Signer’s balance or data (if any) stored in the account, though it’s primary purpose is to validate signatures.
+
+a program, and you may issue to it a cross program invocation.
+
+```
+
+
+
+
 
